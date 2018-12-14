@@ -82,7 +82,7 @@ Grille.prototype.majDessinObjet=function(objet,dx,dy) {
 	var i=objet.posX;
 	var j=objet.posY;
 	if (tab[i][j]) {
-		Robot.prototype.dessin.call(this,ctx,dX,dY);
+		Robot.prototype.dessin.call(this,ctx,dx,dy);
 	}
 	else {
 		ctx.beginPath();
@@ -199,18 +199,19 @@ Robot.prototype.perception=function() {
 		if (Grille.call(this,tab[objet.posX-1][objet.posY])==true) {
 				tabMvt[0]=false; //Si pion à gauche
 			}
-		else if (Grille.call(this,tab[objet.posX+1][objet.posY])==true) {
+		if (Grille.call(this,tab[objet.posX+1][objet.posY])==true) {
 				tabMvt[1]=false; //Si pion à droite
 			}
-		else if (Grille.call(this,tab[objet.posX][objet.posY-1])==true) {
+		if (Grille.call(this,tab[objet.posX][objet.posY-1])==true) {
 				tabMvt[2]=false; //Si pion en haut
 			}
-		else if (Grille.call(this,tab[objet.posX][objet.posY+1])==true) {
+	    if (Grille.call(this,tab[objet.posX][objet.posY+1])==true) {
 				tabMvt[3]=false; //Si pion en bas
 
 			}	
-	
+    }	
 	setTimeout(this.reflexion(tabMvt),1000);
+
 }
 
 Robot.prototype.reflexion=function(tabMvt) {
