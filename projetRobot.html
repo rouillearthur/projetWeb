@@ -79,6 +79,8 @@ Grille.prototype.majDessinObjet=function(objet,dx,dy) {
 
 	var tab=this.tab;
 	var objet=this.objet;
+	dX=this.dX;
+	dY=this.dY;
 	var i=objet.posX;
 	var j=objet.posY;
 	if (tab[i][j]) {
@@ -103,12 +105,10 @@ Grille.prototype.mvtAdmis=function(objet,dx,dy) {
 	var posY=this.posY;
 	this.dx=dx;
 	this.dy=dy;
-	dX=this.dX;
-	dY=this.dY;
 	var tab=this.tab;
 	var admis=true;
 
-	if ((dx>dX && tab[posX+1][posY]==true) || (dx<-dX && tab[posX-1][posY]==true) || (dy>dY && tab[posX][posY+1]==true) || (dy>-dY && tab[posX][posY-1]==true)) {
+	if (tab[posX+dx][posY+dy]==true || posX+dx>width || posX+dx<0 || posY+dy>height || posY+dy<0) {
 		admis=false;
 	}
 
@@ -211,6 +211,7 @@ Robot.prototype.perception=function() {
 			}	
 	
 	setTimeout(this.reflexion(tabMvt),1000);
+}
 }
 
 Robot.prototype.reflexion=function(tabMvt) {
