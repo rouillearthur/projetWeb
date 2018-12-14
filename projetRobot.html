@@ -34,7 +34,10 @@ function Grille(nbX,nbY,canvaID) {
 	this.nbC=nbX*nbY;
 	this.width=350;
 	this.height=350;
-
+	var dX=this.width/this.nbX;
+	var dY=this.height/this.nbY;
+	this.dX=dX;
+	this.dY=dY;
 	this.canvaID=canvaID;
 	this.ctx=document.getElementById(canvaID).getContext('2d');
 	this.nbCur=0;
@@ -67,15 +70,34 @@ Grille.prototype.ajoutObjet=function(objet) {
 
 	obj.push(objet);
 	tab[objet.posX][objet.posY]=true;
-	console.log(objet.posX);
-	console.log(objet.posY);
 	this.majDessinObjet();
 }
 
-Grille.prototype.majDessinObjet=function(objet,dX,dY) {
+
+
+
+Grille.prototype.mvtAdmis=function(objet,dx,dy) {
+	var objet=this.objet;
+	var posX=this.posX;
+	var posY=this.posY;
+	this.dx=dx;
+	this.dy=dy;
+	dX=this.dX;
+	dY=this.dY;
+	var tab=this.tab;
+	var admis=true;
+
+	if ((dx>dX && tab[posX+1][posY]==true) || (dx<-dX && tab[posX-1][posY]==true) || (dy>dY && tab[posX][posY+1]==true) || (dy>-dY && tab[posX][posY-1]==true)) {
+		admis=false;
+	}
+
+	return admis;
+}
+
+Grille.prototype.majDessinObjet=function(objet,dx,dy) {
 	var ctx=this.ctx;
-	var dX=this.width/this.nbX;
-	var dY=this.height/this.nbY;
+	var dX=this.dX
+	var dY=this.dY;
 	var tab=this.tab;
 	var objet=this.objet;
 	var i =objet.posX;
@@ -93,23 +115,6 @@ Grille.prototype.majDessinObjet=function(objet,dX,dY) {
 		ctx.fill();
 		ctx.closePath();
 	}
-}
-
-
-Grille.prototype.mvtAdmis=function(objet,dX,dY) {
-	var objet=this.objet;
-	var posX=this.posX;
-	var posY=this.posY;
-	this.dX=dY;
-	this.dY=dY;
-	var tab=this.tab;
-	var admis=true;
-
-	if (tab[posX-1][posY]==true || tab[posX][posY-1]==true || tab[posX+1][posY]==true || tab[posX][posY+1]==true) {
-		admis=false;
-	}
-
-	return admis;
 }
 
 
@@ -180,10 +185,10 @@ Robot.prototype.reveille=function() {
 
 Robot.prototype.perception=function() {
 	objet=this.objet;
-	dX=this.dX;
-	dY=this.dY;
+	dx=this.dx;
+	dy=this.dy;
 	
-	var mvt=Grille.prototype.mvtAdmis.call(this,objet,dX,dY);
+	var mvt=Grille.prototype.mvtAdmis.call(this,objet,dx,dy);
 	var tabMvt=[4];
 
 	for (var k=0; k<4; k++) {
