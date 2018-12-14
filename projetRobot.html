@@ -176,7 +176,7 @@ Robot.prototype.dessin=function(ctx,dX,dY) {
 	ctx.fillStyle=objet.couleur;
 	ctx.arc(objet.posX*dX+dX/2, objet.posY*dY+dY/2, dY/3, 0, 2 * Math.PI);
 	ctx.fill();
-	ctx.closePath();
+	ctx.closePath();//gfzegfze
 }
 Robot.prototype.reveille=function() {
 	this.perception();
@@ -186,7 +186,7 @@ Robot.prototype.reveille=function() {
 Robot.prototype.perception=function() {
 	objet=this.objet;
 	dx=this.dx;
-	dy=this.dy;
+	dy=this.dy;  
 	
 	var mvt=Grille.prototype.mvtAdmis.call(this,objet,dx,dy);
 	var tabMvt=[4];
