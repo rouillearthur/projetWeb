@@ -112,7 +112,7 @@ Grille.prototype.mvtAdmis=function(objet,dX,dY) {
 	return admis;
 }
 
-//eizghiozh
+
 Grille.prototype.dessinGrille=function() {
 	var ctx=this.ctx;
 	var width=this.width;
@@ -144,6 +144,9 @@ Grille.prototype.dessin=function() {
 }
 
 Grille.prototype.stopObjets=function() {
+	for (var i=0;i<this.obj.lenght;i++){
+		this.obj[i].eveille=false;
+	}
 
 }
 
@@ -177,7 +180,7 @@ Robot.prototype.reveille=function() {
 	this.perception();
 }
 
-//test
+
 Robot.prototype.perception=function() {
 	objet=this.objet;
 	dX=this.dX;
@@ -191,28 +194,21 @@ Robot.prototype.perception=function() {
 	}
 
 	if (mvt) {
-		for (var i=0;i<4;i++) {
-			if (Grille.call(this,tab[objet.posX-1][objet.posY])==true) {
+		if (Grille.call(this,tab[objet.posX-1][objet.posY])==true) {
 				tabMvt[0]=false; //Si pion à gauche
 			}
-			else if (Grille.call(this,tab[objet.posX+1][objet.posY])==true) {
+		else if (Grille.call(this,tab[objet.posX+1][objet.posY])==true) {
 				tabMvt[1]=false; //Si pion à droite
 			}
-			else if (Grille.call(this,tab[objet.posX][objet.posY-1])==true) {
+		else if (Grille.call(this,tab[objet.posX][objet.posY-1])==true) {
 				tabMvt[2]=false; //Si pion en haut
 			}
-			else if (Grille.call(this,tab[objet.posX][objet.posY+1])==true) {
+		else if (Grille.call(this,tab[objet.posX][objet.posY+1])==true) {
 				tabMvt[3]=false; //Si pion en bas
 			}
 		}
-	}
-	else {
-		for (var k=0; k<4; k++) {
-			tabMvt[k]=false;
-		}
-	}
-	setTimeout(this.reflexion(tabMvt), 1000);
-
+	
+	setTimeout(this.reflexion(tabMvt),1000);
 }
 
 Robot.prototype.reflexion=function(tabMvt) {
@@ -263,7 +259,7 @@ gr.ajoutObjet(rbt2);
 gr.ajoutObjet(rbt3);
 gr.dessin();
 
-rbt1.reveille();
+//rbt1.reveille();
 //rbt2.reveille();
 //rbt3.reveille();
 
