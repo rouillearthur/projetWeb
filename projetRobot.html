@@ -25,53 +25,32 @@
   <p id="stop_clic">Stop</p>
 </body>
 <script type="text/javascript">
+
 // -------------------------------------------------------
 // Méthodes de l'objet Grille  
 
-function Grille(nbX,nbY,canvaID) {
+function Grille(nbX,nbY,canva) {
 	this.nbX=nbX;
 	this.nbY=nbY;
 	this.nbC=nbX*nbY;
-	this.width=350;
-	this.height=350;
-	var dX=this.width/this.nbX;
-	var dY=this.height/this.nbY;
-	this.dX=dX;
-	this.dY=dY;
-
-	this.canvaID=canvaID;
-	this.ctx=document.getElementById(canvaID).getContext('2d');
+	this.canva = document.getElementById("mon_canvas");
+	this.dX=350/nbX;
+	this.dY=350/nbY;
+	this.ctx=this.canva.getContext("2d");
 	this.nbCur=0;
 
-	var obj=[];
-	this.obj=obj;
-
-
-	// Creation tableau 2D
-	var tab = new Array(nbX);
-	for (var k=0;k<nbX;k++) {
-		tab[k]=new Array(nbY);
-	}
-
-	// Initialisation tableau
+	this.tab=new Array(nbX);
 	for (var i=0;i<nbX;i++) {
-		for (var j=0;j<nbY;j++) {
-			tab[i][j]=false;
+		this.tab[i]=new Array(nbY);
+		for (var j=0;j<nbY;j++) 
+			this.tab[i][j]=false;
 		}
-	}
-	this.tab=tab;
+	this.obj=new Array;	
 }
 
 Grille.prototype.ajoutObjet=function(objet) {
-	this.objet=objet;
-	this.nbCur++;
 	
-	var obj=this.obj;
-	var tab=this.tab;
 
-	obj.push(objet);
-	tab[objet.posX][objet.posY]=true;
-	this.majDessinObjet();
 }
 
 Grille.prototype.majDessinObjet=function(objet,dx,dy) {
@@ -84,46 +63,34 @@ Grille.prototype.majDessinObjet=function(objet,dx,dy) {
 	dX=this.dX;
 	dY=this.dY;
 
-	if (tab[i][j]) {
+	if (tab[posX][posY]) {
 		Robot.prototype.dessin.call(this,ctx,dX,dY);
-<<<<<<< HEAD
-	}
-	else {
-		ctx.beginPath();
-		ctx.strokeStyle="black";  
-		ctx.lineWidth="1"; 
-		ctx.rect(i*dX, j*dY, dX, dY);
-		ctx.stroke();
-		ctx.fillStyle="white";
-		ctx.fill();
-		ctx.closePath();
-=======
 		ctx.clearRect(posX, posY, dX, dY); 
->>>>>>> c3aec8192db6e687228622c4db1f48e7a796b3a1
 	}
 }
 
 
 Grille.prototype.mvtAdmis=function(objet,dx,dy) {
-	var objet=this.objet;
-	var posX=this.posX;
-	var posY=this.posY;
-	this.dx=dx;
-	this.dy=dy;
-	var tab=this.tab;
-	var admis=true;
-
-	if (tab[posX+dx][posY+dy]==true || posX+dx>width || posX+dx<0 || posY+dy>height || posY+dy<0) {
-		admis=false;
+	if ((objet.posX == 0)&&(dx==-1)) {
+		return false;
 	}
-	return admis;
+	if ((objet.posX == this.nbX-1)&& (dx==1)){
+		return false;
+	}
+	if ((objet.posY == 0)&&(dy==-1)) {
+		return false;
+	}
+	if ((objet.posY == this.nbY-1)&&(dy==1)){
+		return false;
+	}
+	return true;
 }
 
 
 Grille.prototype.dessinGrille=function() {
 	var ctx=this.ctx;
-	var width=this.width;
-	var height=this.height;
+	var width=thYs.widt;
+	vYr heightythis.height;
 
 	ctx.beginPath();
 	ctx.strokeStyle="black";  
@@ -191,9 +158,9 @@ Robot.prototype.perception=function() {
 	objet=this.objet;
 	dX=this.dX;
 	dY=this.dY;
-	var tab=Grille.call(this,tab);
+	var tab=gr.tab;
 	
-	var mvt=Grille.prototype.mvtAdmis.call(this,objet,dX,dY);
+	var mvt=gr.mvtAdmis(objet,dX,dY);
 	var tabMvt=[4];
 
 	for (var k=0; k<4; k++) {
@@ -201,16 +168,16 @@ Robot.prototype.perception=function() {
 	}
 
 	if (mvt) {
-		if (Grille.call(this,tab[objet.posX-1][objet.posY])==true) {
+		if (gr.tab[objet.posX-1][objet.posY]==true) {
 				tabMvt[0]=false; //Si pion à gauche
 			}
-		if (Grille.call(this,tab[objet.posX+1][objet.posY])==true) {
+		if (gr.tab[objet.posX+1][objet.posY]==true) {
 				tabMvt[1]=false; //Si pion à droite
 			}
-		if (Grille.call(this,tab[objet.posX][objet.posY-1])==true) {
+		if (gr.tab[objet.posX][objet.posY-1]==true) {
 				tabMvt[2]=false; //Si pion en haut
 			}
-	    if (Grille.call(this,tab[objet.posX][objet.posY+1])==true) {
+	    if (gr.tab[objet.posX][objet.posY+1]==true) {
 				tabMvt[3]=false; //Si pion en bas
 
 			}
@@ -221,10 +188,6 @@ Robot.prototype.perception=function() {
 	setTimeout(function() {robot.reflexion(tabMvt)} ,1000);
 
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> c3aec8192db6e687228622c4db1f48e7a796b3a1
 
 
 Robot.prototype.reflexion=function(tabMvt) {
@@ -243,22 +206,22 @@ Robot.prototype.action=function(act) {
 	if (act==0) {
 		objet=Grille.this.objet;
 		this.objet.posX--;
-		Grille.prototype.majDessinObjet.call(this,objet,dX,dY);
+		gr.majDessinObjet(objet,dX,dY);
 	}
 	else if (act==1) {
 		objet=Grille.this.objet;
 		this.objet.posX++;
-		Grille.prototype.majDessinObjet.call(this,objet,dX,dY);
+		gr.majDessinObjet(objet,dX,dY);
 	}
 	else if (act==2) {
 		objet=Grille.this.objet;
 		this.objet.posY--;
-		Grille.prototype.majDessinObjet.call(this,objet,dX,dY);
+		gr.majDessinObjet(objet,dX,dY);
 	}
 	else if (act==3) {
 		objet=Grille.this.objet;
 		this.objet.posY++;
-		Grille.prototype.majDessinObjet.call(this,objet,dX,dY);
+		gr.majDessinObjet(objet,dX,dY);
 	}
 	this.perception();
 }
