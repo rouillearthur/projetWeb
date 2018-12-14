@@ -84,7 +84,7 @@ Grille.prototype.majDessinObjet=function(objet,dx,dy) {
 	var i=objet.posX;
 	var j=objet.posY;
 	if (tab[i][j]) {
-		Robot.prototype.dessin.call(this,ctx,dx,dy);
+		Robot.prototype.dessin.call(this,ctx,dX,dY);
 	}
 	else {
 		ctx.beginPath();
@@ -178,6 +178,7 @@ Robot.prototype.dessin=function(ctx,dX,dY) {
 	ctx.closePath();
 }
 Robot.prototype.reveille=function() {
+	this.eveille=true;
 	this.perception();
 }
 
@@ -208,20 +209,25 @@ Robot.prototype.perception=function() {
 	    if (Grille.call(this,tab[objet.posX][objet.posY+1])==true) {
 				tabMvt[3]=false; //Si pion en bas
 
-			}	
-    }	
-	setTimeout(this.reflexion(tabMvt),1000);
+			}
+
+    }
+    var robot= this;
+    console.log(tabMvt);	
+	setTimeout(function() {robot.reflexion(tabMvt)} ,1000);
 
 }
-}
+
 
 Robot.prototype.reflexion=function(tabMvt) {
 	var act=getRandomInt(0, 3);
 
 	while (tabMvt[act]==false) {
-		act=getRandomInt(0, 3);
+		act=getRandomInt(0,3);
 	}
-	setTimeout(this.action(act),1000);
+	console.log(act);
+	var robot= this;
+	setTimeout(function(){robot.action(act)},1000);
 }
 
 Robot.prototype.action=function(act) {
@@ -262,10 +268,10 @@ gr.ajoutObjet(rbt1);
 gr.ajoutObjet(rbt2);
 gr.ajoutObjet(rbt3);
 gr.dessin();
-
-//rbt1.reveille();
-//rbt2.reveille();
-//rbt3.reveille();
+console.log(5);
+rbt1.reveille();
+rbt2.reveille();
+rbt3.reveille();
 
 </script>
 </html>
